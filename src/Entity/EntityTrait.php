@@ -27,8 +27,8 @@ trait EntityTrait
 
     /**
      * @param array $properties
-     * @return $this
      * @throws \InvalidArgumentException
+     * @return $this
      */
     private function initialize(array $properties = [])
     {
@@ -48,15 +48,6 @@ trait EntityTrait
 
                 unset($properties[$name]);
             }
-        }
-
-        if (count($properties) !== 0) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Not supported properties [%s].',
-                    implode(', ', array_keys($properties))
-                )
-            );
         }
 
         return $this;
@@ -174,9 +165,13 @@ trait EntityTrait
      */
     final public function __set($name, $value)
     {
-        throw new \LogicException(
-            sprintf('The property "%s" could not set.', $name)
-        );
+        if ($this->__isset($name)) {
+            $this->{$name} = $value;
+        } else {
+            throw new \LogicException(
+                sprintf('The property "%s" could not set.', $name)
+            );
+        }
     }
 
     /**
