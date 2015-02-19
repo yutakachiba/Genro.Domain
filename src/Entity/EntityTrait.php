@@ -8,6 +8,8 @@
  */
 namespace Genro\Domain\Entity;
 
+use Stringy\StaticStringy as S;
+
 /**
  * Trait EntityTrait
  *
@@ -18,79 +20,16 @@ trait EntityTrait
 {
 
     /**
-     * @param array $properties
-     */
-    public function __construct(array $properties = [])
-    {
-        $this->initialize($properties);
-    }
-
-    /**
-     * @param array $properties
-     * @throws \InvalidArgumentException
-     * @return $this
-     */
-    private function initialize(array $properties = [])
-    {
-        foreach (array_keys(get_object_vars($this)) as $name) {
-
-            $this->{$name} = null;
-
-            if (array_key_exists($name, $properties)) {
-
-                $value = (is_object($properties[$name])) ? clone $properties[$name] : $properties[$name];
-
-                if (method_exists($this, 'set' . $name)) {
-                    $this->{'set' . $name}($value);
-                } else {
-                    $this->{$name} = $value;
-                }
-
-                unset($properties[$name]);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        $values = [];
-
-        foreach (array_keys(get_object_vars($this)) as $name) {
-            $value         = $this->__get($name);
-            $values[$name] = ($value instanceof EntityInterface) ? $value->toArray() : $value;
-        }
-
-        return $values;
-    }
-
-    /**
-     * @param mixed $name
-     * @return bool
-     */
-    public function __isset($name)
-    {
-        return property_exists($this, $name);
-    }
-
-    /**
-     * @param mixed $name
+     * Read-only access to properties.
+     *
+     * @param string $name
      * @return mixed
-     * @throws \InvalidArgumentException
      */
     public function __get($name)
     {
-        if (method_exists($this, 'get' . $name)) {
-            return $this->{'get' . $name}();
-        }
-
         if (!property_exists($this, $name)) {
-            throw new \InvalidArgumentException(
-                sprintf('The property "%s" does not exists.', $name)
+            throw new \LogicException(
+                sprintf('Not allowed to get the property. "%s::%s"', get_class($this), $name)
             );
         }
 
@@ -98,117 +37,21 @@ trait EntityTrait
     }
 
     /**
-     * __clone for clone
-     */
-    public function __clone()
-    {
-        foreach (get_object_vars($this) as $name => $value) {
-            if (is_object($value)) {
-                $this->{$name} = clone $value;
-            }
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function __sleep()
-    {
-        return array_keys(get_object_vars($this));
-    }
-
-    /**
-     * @param array $properties
-     * @return object
-     */
-    public static function __set_state(array $properties)
-    {
-        return new static($properties);
-    }
-
-    /**
-     * ArrayAccess::offsetExists
+     * Read-only access to properties.
      *
-     * @param mixed $name
-     * @return bool
-     */
-    public function offsetExists($name)
-    {
-        return $this->__isset($name);
-    }
-
-    /**
-     * ArrayAccess::offsetGet
-     *
-     * @param mixed $name
-     * @return mixed
-     */
-    public function offsetGet($name)
-    {
-        return $this->__get($name);
-    }
-
-    /**
-     * ArrayIterator::getIterator
-     *
-     * @return \ArrayIterator
-     */
-    public function getIterator()
-    {
-        return new \ArrayIterator(get_object_vars($this));
-    }
-
-    /**
-     * @param mixed $name
+     * @param string $name
      * @param mixed $value
-     * @throws \LogicException
      */
-    final public function __set($name, $value)
+    public function __set($name, $value)
     {
-        if ($this->__isset($name)) {
-            $this->{$name} = $value;
-        } else {
+        $method = 'set' . S::upperCamelize($name);
+
+        if (!method_exists($this, $method)) {
             throw new \LogicException(
-                sprintf('The property "%s" could not set.', $name)
+                sprintf('Not allowed to set the property. "%s::%s"', get_class($this), $name)
             );
         }
-    }
 
-    /**
-     * @param mixed $name
-     * @throws \LogicException
-     */
-    final public function __unset($name)
-    {
-        throw new \LogicException(
-            sprintf('The property "%s" could not unset.', $name)
-        );
-    }
-
-    /**
-     * ArrayAccess::offsetSet
-     *
-     * @param mixed $name
-     * @param mixed $value
-     * @throws \LogicException
-     */
-    public function offsetSet($name, $value)
-    {
-        throw new \LogicException(
-            sprintf('The property "%s" could not set.', $name)
-        );
-    }
-
-    /**
-     * ArrayAccess::offsetUnset
-     *
-     * @param mixed $name
-     * @throws \LogicException
-     */
-    public function offsetUnset($name)
-    {
-        throw new \LogicException(
-            sprintf('The property "%s" could not unset.', $name)
-        );
+        $this->{$method}($value);
     }
 }

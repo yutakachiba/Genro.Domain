@@ -4,7 +4,7 @@
  * MockEntity.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
- * @created 2014/07/21 18:01
+ * @created   2015/02/20 3:58
  */
 namespace Genro\Domain\Mock;
 
@@ -15,7 +15,11 @@ use Genro\Domain\Entity\EntityTrait;
  * Class MockEntity
  *
  * @package Genro\Domain\Mock
- * @author Yutaka Chiba <yutakachiba@gmail.com>
+ * @author  Yutaka Chiba <yutakachiba@gmail.com>
+ *
+ * @property-read string $name
+ * @property-read string $address
+ * @property-read \DateTime $birthday
  */
 class MockEntity implements EntityInterface
 {
@@ -23,43 +27,33 @@ class MockEntity implements EntityInterface
     use EntityTrait;
 
     /**
-     * @var int
+     * @var string
      */
-    private $mockId;
+    private $name;
 
     /**
      * @var string
      */
-    private $title;
+    private $address;
 
     /**
-     * @var \Genro\Domain\Value\DateTime
+     * @var \DateTime
      */
-    private $createdAt;
+    private $birthday;
 
-    /**
-     * @var string
-     */
-    private $body;
+    public function __construct(
+        $name,
+        $address,
+        \DateTime $birthday
+    ) {
 
-    /**
-     * @var ChildEntity
-     */
-    private $childEntity;
-
-    /**
-     * @param ChildEntity $childEntity
-     */
-    public function setChildEntity(ChildEntity $childEntity)
-    {
-        $this->childEntity = $childEntity;
+        $this->name     = $name;
+        $this->address  = $address;
+        $this->birthday = $birthday;
     }
 
-    /**
-     * @return ChildEntity
-     */
-    public function getChildEntity()
+    public function setBirthday(\DateTime $birthday)
     {
-        return $this->childEntity;
+        $this->birthday = $birthday;
     }
 }

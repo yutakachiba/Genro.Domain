@@ -8,7 +8,6 @@
  */
 namespace Genro\Domain\Entity;
 
-use Genro\Domain\Mock\ChildEntity;
 use Genro\Domain\Mock\MockEntity;
 
 /**
@@ -21,222 +20,48 @@ class EntityTraitTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var array
+     * @var MockEntity
      */
-    protected $properties;
+    protected $entity;
 
     protected function setUp()
     {
-        $properties = [];
-        $properties['mockId']      = 1;
-        $properties['title']       = 'エンティティのテスト';
-        $properties['createdAt']   = '2014-07-01 13:00:00';
-        $properties['body']        = '本文です。';
-        $properties['childEntity'] = new ChildEntity([
-            'childId' => 10,
-            'image01' => 'image01.jpg',
-            'image02' => 'image02.jpg',
-            'image03' => 'image03.jpg',
-        ]);
-
-        $this->properties = $properties;
-    }
-
-    protected function tearDown()
-    {
+        $this->entity = new MockEntity('Yutaka Chiba', 'Komae Tokyo', new \DateTime('1978-05-29'));
     }
 
     public function testNew()
     {
-        $actual = new MockEntity($this->properties);
-        $expected = '\Genro\Domain\Entity\EntityInterface';
-
-        $this->assertInstanceOf($expected, $actual);
+        $this->assertInstanceOf('Genro\Domain\Entity\EntityInterface', $this->entity);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testNewExceptionNoKey()
-    {
-        $properties = $this->properties;
-        $properties['mock_id'] = 1;
-
-        new MockEntity($properties);
-    }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testNewExceptionInvalidType()
-    {
-        $properties = $this->properties;
-        $properties['childEntity'] = 'childEntity';
-
-        new MockEntity($properties);
-    }
-
-    public function testToArray()
-    {
-        $entity = new MockEntity($this->properties);
-        $properties = $entity->toArray();
-
-        $actual   = $properties['mockId'];
-        $expected = 1;
-        $this->assertSame($expected, $actual);
-
-        $actual   = $properties['title'];
-        $expected = 'エンティティのテスト';
-        $this->assertSame($expected, $actual);
-
-        $actual   = $properties['createdAt'];
-        $expected = '2014-07-01 13:00:00';
-        $this->assertSame($expected, $actual);
-
-        $actual   = $properties['body'];
-        $expected = '本文です。';
-        $this->assertSame($expected, $actual);
-
-        $actual   = $properties['childEntity'];
-        $expected = ['childId' => 10, 'image01' => 'image01.jpg', 'image02' => 'image02.jpg', 'image03' => 'image03.jpg'];
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testIsset()
-    {
-        $entity = new MockEntity($this->properties);
-
-        $actual = isset($entity->mockId);
-        $this->assertTrue($actual);
-
-        $actual = isset($entity->childId);
-        $this->assertFalse($actual);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGet()
     {
-        $entity = new MockEntity($this->properties);
-
-        $actual   = $entity->mockId;
-        $expected = 1;
-        $this->assertSame($expected, $actual);
-
-        $actual   = $entity->childEntity->toArray();
-        $expected = ['childId' => 10, 'image01' => 'image01.jpg', 'image02' => 'image02.jpg', 'image03' => 'image03.jpg'];
-        $this->assertSame($expected, $actual);
-
-        $entity->childId;
-    }
-
-    public function testClone()
-    {
-        $entity = new MockEntity($this->properties);
-
-        $cloneEntity = clone $entity;
-
-        $actual   = $entity->toArray();
-        $expected = $cloneEntity->toArray();
-
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testSleep()
-    {
-        $entity = new MockEntity($this->properties);
-        $serialized   = serialize($entity);
-        $unserialized = unserialize($serialized);
-
-        $actual   = $entity->toArray();
-        $expected = $unserialized->toArray();
-
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testSetState()
-    {
-        $entity = new MockEntity($this->properties);
-
-        $exportEntity = null;
-        eval('$exportEntity = ' . var_export($entity, true) . ';');
-
-        $actual   = $entity->toArray();
-        $expected = $exportEntity->toArray();
-
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testOffsetExists()
-    {
-        $entity = new MockEntity($this->properties);
-
-        $actual = $entity->offsetExists('mockId');
-        $this->assertTrue($actual);
-
-        $actual = $entity->offsetExists('childId');
-        $this->assertFalse($actual);
-    }
-
-    public function testOffsetGet()
-    {
-        $entity = new MockEntity($this->properties);
-
-        $actual   = $entity->offsetGet('mockId');
-        $expected = 1;
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testGetIterator()
-    {
-        $entity = new MockEntity($this->properties);
-
-        $list = [];
-
-        foreach ($entity as $key => $value) {
-            $list[$key] = $value;
-        }
-
-        $actual   = $list['mockId'];
-        $expected = 1;
-
-        $this->assertSame($expected, $actual);
+        $this->assertSame('Yutaka Chiba', $this->entity->name);
+        $this->assertSame('Komae Tokyo', $this->entity->address);
+        $this->assertSame('1978-05-29', $this->entity->birthday->format('Y-m-d'));
     }
 
     /**
      * @expectedException \LogicException
+     * @expectedExceptionMessage Not allowed to get the property. "Genro\Domain\Mock\MockEntity::unknown"
      */
+    public function testGetException()
+    {
+        $this->entity->unknown;
+    }
+
     public function testSet()
     {
-        $entity = new MockEntity($this->properties);
-        $entity->mockId = 2;
+        $this->entity->birthday = new \DateTime('2015-01-01');
+        $this->assertSame('2015-01-01', $this->entity->birthday->format('Y-m-d'));
     }
 
     /**
      * @expectedException \LogicException
+     * @expectedExceptionMessage Not allowed to set the property. "Genro\Domain\Mock\MockEntity::name"
      */
-    public function testUnset()
+    public function testSetException()
     {
-        $entity = new MockEntity($this->properties);
-        unset($entity->mockId);
-    }
-
-    /**
-     * @expectedException \LogicException
-     */
-    public function testOffsetSet()
-    {
-        $entity = new MockEntity($this->properties);
-        $entity->offsetSet('mockId', 2);
-    }
-
-    /**
-     * @expectedException \LogicException
-     */
-    public function testOffsetUnset()
-    {
-        $entity = new MockEntity($this->properties);
-        $entity->offsetUnset('mockId');
+        $this->entity->name = 'Yutaka Chiba';
     }
 }

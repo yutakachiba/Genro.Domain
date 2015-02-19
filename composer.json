@@ -3,13 +3,12 @@
     "description":" ",
     "keywords":[
     ],
-    "config":{
-        "bin-dir": "bin"
-    },
-    "license": "BSD-3-Clause",
     "autoload":{
         "psr-4":{
             "Genro\\Domain\\": "src/"
         }
+    },
+    "require": {
+        "danielstjules/stringy": "~1.9"
     }
 }
