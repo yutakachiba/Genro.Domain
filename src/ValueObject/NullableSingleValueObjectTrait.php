@@ -31,4 +31,12 @@ trait NullableSingleValueObjectTrait
 
         $this->value = $value;
     }
+
+    /**
+     * @return bool
+     */
+    public function isNull()
+    {
+        return ($this->value === null);
+    }
 }
