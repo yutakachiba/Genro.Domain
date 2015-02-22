@@ -80,4 +80,12 @@ class DateTimeTraitTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($this->value->format('Y-m-d H:i:s'), $this->dateTime->__toString());
     }
+
+    public function testIsNull()
+    {
+        $this->assertFalse($this->dateTime->isNull());
+
+        $dateTime = new MockDateTimeValue(null);
+        $this->assertTrue($dateTime->isNull());
+    }
 }
