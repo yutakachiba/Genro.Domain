@@ -17,7 +17,7 @@ use Traversable;
  * @package Genro\Domain\Collection
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-interface CollectionInterface
+interface CollectionInterface extends \IteratorAggregate, \Countable
 {
 
     /**
