@@ -26,7 +26,9 @@ class EntityTraitTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->entity = new MockEntity('Yutaka Chiba', 'Komae Tokyo', new \DateTime('1978-05-29'));
+        $this->entity = new MockEntity(
+            'Yutaka Chiba', 'Komae Tokyo', new \DateTime('1978-05-29'), new \DateTime('2015-01-01 01:23:45')
+        );
     }
 
     public function testNew()
@@ -39,6 +41,7 @@ class EntityTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Yutaka Chiba', $this->entity->name);
         $this->assertSame('Komae Tokyo', $this->entity->address);
         $this->assertSame('1978-05-29', $this->entity->birthday->format('Y-m-d'));
+        $this->assertSame('2015-01-01 01:23:45', $this->entity->created_at);
     }
 
     /**

@@ -27,13 +27,17 @@ trait EntityTrait
      */
     public function __get($name)
     {
-        if (!property_exists($this, $name)) {
-            throw new \LogicException(
-                sprintf('Not allowed to get the property. "%s::%s"', get_class($this), $name)
-            );
+        $method = 'get' . S::upperCamelize($name);
+
+        if (method_exists($this, $method)) {
+            return $this->{$method}();
+        } elseif (property_exists($this, $name)) {
+            return $this->{$name};
         }
 
-        return $this->{$name};
+        throw new \LogicException(
+            sprintf('Not allowed to get the property. "%s::%s"', get_class($this), $name)
+        );
     }
 
     /**

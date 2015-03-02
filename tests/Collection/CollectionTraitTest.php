@@ -33,8 +33,8 @@ class CollectionTraitTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->entities = [
-            new MockEntity('Yutaka Chiba', 'Komae Tokyo', new \DateTime('1978-05-29')),
-            new MockEntity('Yuka Chiba', 'Komae Tokyo', new \DateTime('1978-08-05')),
+            new MockEntity('Yutaka Chiba', 'Komae Tokyo', new \DateTime('1978-05-29'), new \DateTime('2015-01-01 01:23:45')),
+            new MockEntity('Yuka Chiba', 'Komae Tokyo', new \DateTime('1978-08-05'), new \DateTime('2015-01-01 01:23:45')),
         ];
 
         $this->collection = new MockCollection($this->entities);
@@ -60,7 +60,7 @@ class CollectionTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testAdd()
     {
-        $entity = new MockEntity('Ryo Chiba', 'Komae Tokyo', new \DateTime('2012-07-11'));
+        $entity = new MockEntity('Ryo Chiba', 'Komae Tokyo', new \DateTime('2012-07-11'), new \DateTime('2015-01-01 01:23:45'));
         $this->collection->add($entity);
         $this->assertSame($entity, $this->collection->get(2));
         $this->assertSame(3, $this->collection->count());
