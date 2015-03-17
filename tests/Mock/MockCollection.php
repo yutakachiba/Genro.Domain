@@ -8,7 +8,7 @@
  */
 namespace Genro\Domain\Mock;
 
-use Genro\Domain\Collection\CollectionInterface;
+use Genro\Domain\Collection\Collection;
 use Genro\Domain\Collection\CollectionTrait;
 
 /**
@@ -17,7 +17,7 @@ use Genro\Domain\Collection\CollectionTrait;
  * @package Genro\Domain\Mock
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class MockCollection implements CollectionInterface
+class MockCollection implements Collection
 {
 
     use CollectionTrait;

@@ -42,7 +42,7 @@ class CollectionTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testNew()
     {
-        $this->assertInstanceOf('Genro\Domain\Collection\CollectionInterface', $this->collection);
+        $this->assertInstanceOf('Genro\Domain\Collection\Collection', $this->collection);
     }
 
     public function testGetIterator()

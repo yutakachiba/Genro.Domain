@@ -33,7 +33,7 @@ class EntityTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testNew()
     {
-        $this->assertInstanceOf('Genro\Domain\Entity\EntityInterface', $this->entity);
+        $this->assertInstanceOf('Genro\Domain\Entity\Entity', $this->entity);
     }
 
     public function testGet()

@@ -8,8 +8,6 @@
  */
 namespace Genro\Domain\ValueObject;
 
-use Genro\Domain\Mock\MockNaturalNumberValue;
-
 /**
  * Class NaturalNumberTest
  *
@@ -20,7 +18,7 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var MockNaturalNumberValue
+     * @var \Genro\Domain\ValueObject\NaturalNumber
      */
     protected $number;
 
@@ -32,63 +30,70 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->value = 1;
-        $this->number = new MockNaturalNumberValue($this->value);
+        $this->number = new NaturalNumber($this->value);
     }
 
     public function testNew()
     {
-        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObjectInterface', $this->number);
+        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $this->number);
     }
 
     public function testNewFromString()
     {
-        $number = new MockNaturalNumberValue('1');
-        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObjectInterface', $number);
+        $number = new NaturalNumber('1');
+        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $number);
     }
 
     public function testNewWithZero()
     {
-        $number = new MockNaturalNumberValue(0);
-        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObjectInterface', $number);
+        $number = new NaturalNumber(0);
+        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $number);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument must contain letters only 0-9. "-1" given.
      */
     public function testNewLessThanZero()
     {
-        new MockNaturalNumberValue(-1);
+        new NaturalNumber(-1);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument must be an integer. "double" given.
      */
     public function testNewWithFloat()
     {
-        new MockNaturalNumberValue(0.1);
+        new NaturalNumber(0.1);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument must be an integer. "NULL" given.
      */
     public function testNewWithNull()
     {
-        new MockNaturalNumberValue(null);
+        new NaturalNumber(null);
     }
 
     public function testIsSameValueAs()
     {
-        $this->assertTrue($this->number->isSameValueAs(new MockNaturalNumberValue(1)));
-        $this->assertFalse($this->number->isSameValueAs(new MockNaturalNumberValue(2)));
+        $this->assertTrue($this->number->isSameValueAs(new NaturalNumber(1)));
+        $this->assertFalse($this->number->isSameValueAs(new NaturalNumber(2)));
     }
 
     public function testGetValue()
     {
         $value = $this->number->getValue();
         $this->assertSame($this->value, $value);
+    }
+
+    public function testIsNull()
+    {
+        $this->assertFalse($this->number->isNull());
+    }
+
+    public function testAsPdoValue()
+    {
+        $this->assertSame(1, $this->number->asPdoValue());
     }
 
     public function testToString()
