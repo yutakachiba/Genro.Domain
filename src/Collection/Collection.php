@@ -1,10 +1,10 @@
 <?php
 
 /**
- * CollectionTrait.php
+ * Collection.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
- * @created 2015/02/19 16:04
+ * @created 2015/02/19 16:06
  */
 namespace Genro\Domain\Collection;
 
@@ -12,26 +12,13 @@ use Genro\Domain\Entity\Entity;
 use Traversable;
 
 /**
- * Trait CollectionTrait
+ * Interface Collection
  *
  * @package Genro\Domain\Collection
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-trait CollectionTrait
+interface Collection
 {
-
-    /**
-     * @var Entity[]
-     */
-    private $items;
-
-    /**
-     * @param Entity[] $items
-     */
-    public function __construct(array $items = [])
-    {
-        $this->items = $items;
-    }
 
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
@@ -41,40 +28,23 @@ trait CollectionTrait
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
      *       <b>Traversable</b>
      */
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->items);
-    }
+    public function getIterator();
 
     /**
      * @param Entity $entity
      */
-    public function add(Entity $entity)
-    {
-        $this->items[] = $entity;
-    }
+    public function add(Entity $entity);
 
     /**
      * @param string|int
      * @return Entity
      */
-    public function get($key)
-    {
-        return $this->items[$key];
-    }
+    public function get($key);
 
     /**
      * @param Entity $entity
      */
-    public function remove(Entity $entity)
-    {
-        foreach ($this->items as $key => $value) {
-            if ($value === $entity) {
-                unset($this->items[$key]);
-                break;
-            }
-        }
-    }
+    public function remove(Entity $entity);
 
     /**
      * (PHP 5 &gt;= 5.1.0)<br/>
@@ -86,8 +56,5 @@ trait CollectionTrait
      *       <p>
      *       The return value is cast to an integer.
      */
-    public function count()
-    {
-        return count($this->items);
-    }
+    public function count();
 }
