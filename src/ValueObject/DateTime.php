@@ -14,18 +14,13 @@ namespace Genro\Domain\ValueObject;
  * @package Genro\Domain\ValueObject
  * @author  Yutaka Chiba <yutakachiba@gmail.com>
  */
-class DateTime implements ValueObject, Comparable, Nullable, PdoValue
+class DateTime implements ValueObject, Comparable, PdoValue
 {
 
     /**
      * @var string
      */
     protected $value;
-
-    /**
-     * @var bool
-     */
-    protected $nullable = false;
 
     /**
      * @var string
@@ -54,7 +49,8 @@ class DateTime implements ValueObject, Comparable, Nullable, PdoValue
      */
     public function isSameValueAs(ValueObject $value)
     {
-        return $this->value == $value;
+        // use == for object compare.
+        return ($this->getValue() == $value->getValue());
     }
 
     /**
@@ -62,15 +58,7 @@ class DateTime implements ValueObject, Comparable, Nullable, PdoValue
      */
     public function __toString()
     {
-        return $this->value->format($this->dateFormat);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNullable()
-    {
-        return $this->nullable;
+        return $this->isNull() ? '' : $this->value->format($this->dateFormat);
     }
 
     /**
@@ -96,7 +84,7 @@ class DateTime implements ValueObject, Comparable, Nullable, PdoValue
     protected function checkValue($value)
     {
         // Check if value is nullable and null.
-        if ($this->nullable && $value === null) {
+        if (($this instanceof Nullable) && $value === null) {
             return $value;
         }
 
@@ -106,7 +94,7 @@ class DateTime implements ValueObject, Comparable, Nullable, PdoValue
         }
 
         // Check if value is a \DateTime acceptable string.
-        // If so, return a \DateTime object as value.
+        // If so, convert string to \DateTime and return it as value.
         if (is_string($value)) {
             try {
                 return new \DateTime($value);

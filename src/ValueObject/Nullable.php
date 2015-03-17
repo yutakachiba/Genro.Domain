@@ -4,7 +4,7 @@
  * Nullable.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
- * @created 2015/03/16 23:41
+ * @created 2015/03/18 6:41
  */
 namespace Genro\Domain\ValueObject;
 
@@ -16,14 +16,4 @@ namespace Genro\Domain\ValueObject;
  */
 interface Nullable
 {
-
-    /**
-     * @return bool
-     */
-    public function isNullable();
-
-    /**
-     * @return bool
-     */
-    public function isNull();
 }

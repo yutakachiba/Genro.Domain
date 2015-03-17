@@ -14,18 +14,13 @@ namespace Genro\Domain\ValueObject;
  * @package Genro\Domain\ValueObject
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class String implements ValueObject, Comparable, Nullable, PdoValue
+class String implements ValueObject, Comparable, PdoValue
 {
 
     /**
      * @var string
      */
     protected $value;
-
-    /**
-     * @var bool
-     */
-    protected $nullable = false;
 
     /**
      * @param mixed $value
@@ -49,7 +44,7 @@ class String implements ValueObject, Comparable, Nullable, PdoValue
      */
     public function isSameValueAs(ValueObject $value)
     {
-        return $this->value == $value;
+        return $this->getValue() === $value->getValue();
     }
 
     /**
@@ -57,15 +52,7 @@ class String implements ValueObject, Comparable, Nullable, PdoValue
      */
     public function __toString()
     {
-        return $this->value;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isNullable()
-    {
-        return $this->nullable;
+        return (string)$this->value;
     }
 
     /**
@@ -91,7 +78,7 @@ class String implements ValueObject, Comparable, Nullable, PdoValue
     protected function checkValue($value)
     {
         // Check if value is nullable and null.
-        if ($this->nullable && $value === null) {
+        if (($this instanceof Nullable) && $value === null) {
             return $value;
         }
 
