@@ -1,23 +1,23 @@
 <?php
 
 /**
- * CollectionInterface.php
+ * Collection.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
  * @created 2015/02/19 16:06
  */
 namespace Genro\Domain\Collection;
 
-use Genro\Domain\Entity\EntityInterface;
+use Genro\Domain\Entity\Entity;
 use Traversable;
 
 /**
- * Interface CollectionInterface
+ * Interface Collection
  *
  * @package Genro\Domain\Collection
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-interface CollectionInterface extends \IteratorAggregate, \Countable
+interface Collection
 {
 
     /**
@@ -31,20 +31,20 @@ interface CollectionInterface extends \IteratorAggregate, \Countable
     public function getIterator();
 
     /**
-     * @param EntityInterface $entity
+     * @param Entity $entity
      */
-    public function add(EntityInterface $entity);
+    public function add(Entity $entity);
 
     /**
      * @param string|int
-     * @return EntityInterface
+     * @return Entity
      */
     public function get($key);
 
     /**
-     * @param EntityInterface $entity
+     * @param Entity $entity
      */
-    public function remove(EntityInterface $entity);
+    public function remove(Entity $entity);
 
     /**
      * (PHP 5 &gt;= 5.1.0)<br/>

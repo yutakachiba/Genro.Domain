@@ -8,7 +8,7 @@
  */
 namespace Genro\Domain\Mock;
 
-use Genro\Domain\Entity\EntityInterface;
+use Genro\Domain\Entity\Entity;
 use Genro\Domain\Entity\EntityTrait;
 
 /**
@@ -22,7 +22,7 @@ use Genro\Domain\Entity\EntityTrait;
  * @property-read \DateTime $birthday
  * @property-read \DateTime $created_at
  */
-class MockEntity implements EntityInterface
+class MockEntity implements Entity
 {
 
     use EntityTrait;

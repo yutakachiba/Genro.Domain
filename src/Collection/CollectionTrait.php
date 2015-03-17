@@ -8,7 +8,7 @@
  */
 namespace Genro\Domain\Collection;
 
-use Genro\Domain\Entity\EntityInterface;
+use Genro\Domain\Entity\Entity;
 use Traversable;
 
 /**
@@ -21,12 +21,12 @@ trait CollectionTrait
 {
 
     /**
-     * @var EntityInterface[]
+     * @var Entity[]
      */
     private $items;
 
     /**
-     * @param EntityInterface[] $items
+     * @param Entity[] $items
      */
     public function __construct(array $items = [])
     {
@@ -47,16 +47,16 @@ trait CollectionTrait
     }
 
     /**
-     * @param EntityInterface $entity
+     * @param Entity $entity
      */
-    public function add(EntityInterface $entity)
+    public function add(Entity $entity)
     {
         $this->items[] = $entity;
     }
 
     /**
      * @param string|int
-     * @return EntityInterface
+     * @return Entity
      */
     public function get($key)
     {
@@ -64,9 +64,9 @@ trait CollectionTrait
     }
 
     /**
-     * @param EntityInterface $entity
+     * @param Entity $entity
      */
-    public function remove(EntityInterface $entity)
+    public function remove(Entity $entity)
     {
         foreach ($this->items as $key => $value) {
             if ($value === $entity) {

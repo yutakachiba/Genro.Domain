@@ -9,11 +9,11 @@
 namespace Genro\Domain\Entity;
 
 /**
- * Interface EntityInterface
+ * Interface Entity
  *
  * @package Genro\Domain\Entity
  * @author yutakachiba@gmail.com
  */
-interface EntityInterface
+interface Entity
 {
 }
