@@ -7,8 +7,5 @@
         "psr-4":{
             "Genro\\Domain\\": "src/"
         }
-    },
-    "require": {
-        "danielstjules/stringy": "~1.9"
     }
 }
