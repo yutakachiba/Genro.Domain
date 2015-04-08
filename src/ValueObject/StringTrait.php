@@ -1,37 +1,40 @@
 <?php
 
 /**
- * String.php
+ * StringTrait.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
- * @created 2015/03/17 0:04
+ * @created 2015/04/08 11:13
  */
 namespace Genro\Domain\ValueObject;
 
 /**
- * Class String
+ * Trait StringTrait
  *
  * @package Genro\Domain\ValueObject
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class String implements ValueObject, Comparable, PdoValue
+trait StringTrait
 {
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $value;
+    private $value;
 
     /**
      * @param mixed $value
      */
     public function __construct($value)
     {
-        $this->value = $this->checkValue($value);
+        $value = $this->convertValue($value);
+        $this->validateType($value);
+        $this->validateSpec($value);
+        $this->value = $value;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getValue()
     {
@@ -73,22 +76,44 @@ class String implements ValueObject, Comparable, PdoValue
 
     /**
      * @param mixed $value
-     * @return string|null
+     * @return string
      */
-    protected function checkValue($value)
+    private function convertValue($value)
+    {
+        if (is_int($value)) {
+            return (string)$value;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    private function validateType($value)
     {
         // Check if value is nullable and null.
         if (($this instanceof Nullable) && $value === null) {
-            return $value;
+            return true;
         }
 
-        // Check if value is string.
+        // Check if value is a string.
         if (is_string($value)) {
-            return $value;
+            return true;
         }
 
         throw new \InvalidArgumentException(
-            sprintf('Invalid DateTime value specified. $value => "%s"', gettype($value))
+            sprintf('Invalid string value specified. $value => "%s"', $value)
         );
+    }
+
+    /**
+     * @param string $value
+     * @return bool
+     */
+    private function validateSpec($value)
+    {
+        return true;
     }
 }

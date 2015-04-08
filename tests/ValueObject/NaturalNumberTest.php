@@ -8,6 +8,8 @@
  */
 namespace Genro\Domain\ValueObject;
 
+use Genro\Domain\Mock\MockNaturalNumber;
+
 /**
  * Class NaturalNumberTest
  *
@@ -18,7 +20,7 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Genro\Domain\ValueObject\NaturalNumber
+     * @var \Genro\Domain\ValueObject\ValueObject
      */
     protected $number;
 
@@ -30,7 +32,7 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->value = 1;
-        $this->number = new NaturalNumber($this->value);
+        $this->number = new MockNaturalNumber($this->value);
     }
 
     public function testNew()
@@ -40,13 +42,13 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
 
     public function testNewFromString()
     {
-        $number = new NaturalNumber('1');
+        $number = new MockNaturalNumber('1');
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $number);
     }
 
     public function testNewWithZero()
     {
-        $number = new NaturalNumber(0);
+        $number = new MockNaturalNumber(0);
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $number);
     }
 
@@ -55,7 +57,7 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
      */
     public function testNewLessThanZero()
     {
-        new NaturalNumber(-1);
+        new MockNaturalNumber(-1);
     }
 
     /**
@@ -63,7 +65,7 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
      */
     public function testNewWithFloat()
     {
-        new NaturalNumber(0.1);
+        new MockNaturalNumber(0.1);
     }
 
     /**
@@ -71,13 +73,13 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
      */
     public function testNewWithNull()
     {
-        new NaturalNumber(null);
+        new MockNaturalNumber(null);
     }
 
     public function testIsSameValueAs()
     {
-        $this->assertTrue($this->number->isSameValueAs(new NaturalNumber(1)));
-        $this->assertFalse($this->number->isSameValueAs(new NaturalNumber(2)));
+        $this->assertTrue($this->number->isSameValueAs(new MockNaturalNumber(1)));
+        $this->assertFalse($this->number->isSameValueAs(new MockNaturalNumber(2)));
     }
 
     public function testGetValue()

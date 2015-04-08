@@ -20,7 +20,7 @@ class NullableDateTimeTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Genro\Domain\ValueObject\DateTime
+     * @var \Genro\Domain\ValueObject\ValueObject
      */
     protected $dateTime;
 

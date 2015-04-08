@@ -1,42 +1,45 @@
 <?php
 
 /**
- * DateTime.php
+ * DateTimeTrait.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
- * @created   2015/03/16 23:38
+ * @created 2015/04/08 11:12
  */
 namespace Genro\Domain\ValueObject;
 
 /**
- * Class DateTime
+ * Trait DateTimeTrait
  *
  * @package Genro\Domain\ValueObject
- * @author  Yutaka Chiba <yutakachiba@gmail.com>
+ * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class DateTime implements ValueObject, Comparable, PdoValue
+trait DateTimeTrait
 {
 
     /**
-     * @var string
+     * @var \DateTime|null
      */
-    protected $value;
+    private $value;
 
     /**
      * @var string
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    private $dateFormat = 'Y-m-d H:i:s';
 
     /**
      * @param mixed $value
      */
     public function __construct($value)
     {
-        $this->value = $this->checkValue($value);
+        $value = $this->convertValue($value);
+        $this->validateType($value);
+        $this->validateSpec($value);
+        $this->value = $value;
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime|null
      */
     public function getValue()
     {
@@ -79,20 +82,10 @@ class DateTime implements ValueObject, Comparable, PdoValue
 
     /**
      * @param mixed $value
-     * @return \DateTime|null
+     * @return \DateTime
      */
-    protected function checkValue($value)
+    private function convertValue($value)
     {
-        // Check if value is nullable and null.
-        if (($this instanceof Nullable) && $value === null) {
-            return $value;
-        }
-
-        // Check if value is a \DateTime object.
-        if ($value instanceof \DateTime) {
-            return $value;
-        }
-
         // Check if value is a \DateTime acceptable string.
         // If so, convert string to \DateTime and return it as value.
         if (is_string($value)) {
@@ -102,8 +95,36 @@ class DateTime implements ValueObject, Comparable, PdoValue
             }
         }
 
+        return $value;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    private function validateType($value)
+    {
+        // Check if value is nullable and null.
+        if (($this instanceof Nullable) && $value === null) {
+            return true;
+        }
+
+        // Check if value is a \DateTime object.
+        if ($value instanceof \DateTime) {
+            return true;
+        }
+
         throw new \InvalidArgumentException(
-            sprintf('Invalid DateTime value specified. $value => "%s"', gettype($value))
+            sprintf('Invalid DateTime value specified. $value => "%s"', $value)
         );
+    }
+
+    /**
+     * @param \DateTime $value
+     * @return bool
+     */
+    private function validateSpec($value)
+    {
+        return true;
     }
 }

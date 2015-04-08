@@ -1,24 +1,23 @@
 <?php
 
 /**
- * MockNullableNaturalNumber.php
+ * MockNaturalNumber.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
- * @created 2015/03/18 7:19
+ * @created 2015/04/08 12:20
  */
 namespace Genro\Domain\Mock;
 
 use Genro\Domain\ValueObject\NaturalNumberTrait;
-use Genro\Domain\ValueObject\Nullable;
 use Genro\Domain\ValueObject\ValueObject;
 
 /**
- * Class MockNullableNaturalNumber
+ * Class MockNaturalNumber
  *
  * @package Genro\Domain\Mock
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class MockNullableNaturalNumber implements ValueObject, Nullable
+class MockNaturalNumber implements ValueObject
 {
 
     use NaturalNumberTrait;

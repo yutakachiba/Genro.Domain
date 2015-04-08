@@ -20,7 +20,7 @@ class NullableNaturalNumberTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Genro\Domain\ValueObject\NaturalNumber
+     * @var \Genro\Domain\ValueObject\ValueObject
      */
     protected $number;
 
