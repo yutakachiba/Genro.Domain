@@ -23,6 +23,12 @@ interface ValueObject
     public function getValue();
 
     /**
+     * @param ValueObject $value
+     * @return bool
+     */
+    public function isSameValueAs(ValueObject $value);
+
+    /**
      * @return string
      */
     public function __toString();

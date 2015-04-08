@@ -8,6 +8,8 @@
  */
 namespace Genro\Domain\ValueObject;
 
+use Genro\Domain\Mock\MockDateTime;
+
 /**
  * Class DateTimeTest
  *
@@ -18,7 +20,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Genro\Domain\ValueObject\DateTime
+     * @var \Genro\Domain\ValueObject\ValueObject
      */
     protected $dateTime;
 
@@ -30,7 +32,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->value    = new \DateTime('1978-05-29');
-        $this->dateTime = new DateTime($this->value);
+        $this->dateTime = new MockDateTime($this->value);
     }
 
     public function testNew()
@@ -40,7 +42,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
     public function testNewWithString()
     {
-        $dateTime = new DateTime('1978-05-29 00:00:00');
+        $dateTime = new MockDateTime('1978-05-29 00:00:00');
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $dateTime);
         $this->assertInstanceOf('\DateTime', $dateTime->getValue());
     }
@@ -50,7 +52,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testNewWithInvalidString()
     {
-        new DateTime('1234-13-99');
+        new MockDateTime('1234-13-99');
     }
 
     /**
@@ -58,16 +60,16 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testNewWithNull()
     {
-        new DateTime(null);
+        new MockDateTime(null);
     }
 
     public function testIsSameValueAs()
     {
-        $dateTime = new DateTime($this->value);
+        $dateTime = new MockDateTime($this->value);
         $actual = $this->dateTime->isSameValueAs($dateTime);
         $this->assertTrue($actual);
 
-        $dateTime = new DateTime('2015-01-01');
+        $dateTime = new MockDateTime('2015-01-01');
         $actual = $this->dateTime->isSameValueAs($dateTime);
         $this->assertFalse($actual);
     }

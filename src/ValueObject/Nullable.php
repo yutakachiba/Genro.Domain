@@ -16,4 +16,9 @@ namespace Genro\Domain\ValueObject;
  */
 interface Nullable
 {
+
+    /**
+     * @return bool
+     */
+    public function isNull();
 }

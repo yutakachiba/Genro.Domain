@@ -1,33 +1,36 @@
 <?php
 
 /**
- * NaturalNumber.php
+ * NaturalNumberTrait.php
  *
  * @copyright Yutaka Chiba <yutakachiba@gmail.com>
- * @created 2015/03/17 0:10
+ * @created 2015/04/08 11:14
  */
 namespace Genro\Domain\ValueObject;
 
 /**
- * Class NaturalNumber
+ * Trait NaturalNumberTrait
  *
  * @package Genro\Domain\ValueObject
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class NaturalNumber implements ValueObject, Comparable, PdoValue
+trait NaturalNumberTrait
 {
 
     /**
      * @var int
      */
-    protected $value;
+    private $value;
 
     /**
      * @param mixed $value
      */
     public function __construct($value)
     {
-        $this->value = $this->checkValue($value);
+        $value = $this->convertValue($value);
+        $this->validateType($value);
+        $this->validateSpec($value);
+        $this->value = $value;
     }
 
     /**
@@ -73,28 +76,46 @@ class NaturalNumber implements ValueObject, Comparable, PdoValue
 
     /**
      * @param mixed $value
-     * @return int|null
+     * @return int
      */
-    protected function checkValue($value)
+    private function convertValue($value)
     {
-        // Check if value is nullable and null.
-        if (($this instanceof Nullable) && $value === null) {
-            return $value;
-        }
-
-        // Check if value is int.
-        if (is_int($value) && $value >= 0) {
-            return $value;
-        }
-
-        // Check if value is an int acceptable string.
-        // If so, convert string to int and return it as value.
+        // Check the value is an int acceptable string.
+        // If so, convert the string to int.
         if (is_string($value) && preg_match('/\A[0-9]{1,11}\z/', $value)) {
             return (int)$value;
         }
 
+        return $value;
+    }
+
+    /**
+     * @param mixed $value
+     * @return bool
+     */
+    private function validateType($value)
+    {
+        // Check if value is nullable and null.
+        if (($this instanceof Nullable) && $value === null) {
+            return true;
+        }
+
+        // Check if value is int.
+        if (is_int($value) && $value >= 0) {
+            return true;
+        }
+
         throw new \InvalidArgumentException(
-            sprintf('Invalid DateTime value specified. $value => "%s"', gettype($value))
+            sprintf('Invalid natural number value specified. $value => "%s"', $value)
         );
+    }
+
+    /**
+     * @param int $value
+     * @return bool
+     */
+    private function validateSpec($value)
+    {
+        return true;
     }
 }

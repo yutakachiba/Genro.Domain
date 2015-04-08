@@ -20,7 +20,7 @@ class NullableStringTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Genro\Domain\ValueObject\String
+     * @var \Genro\Domain\ValueObject\ValueObject
      */
     protected $string;
 

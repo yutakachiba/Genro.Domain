@@ -8,6 +8,8 @@
  */
 namespace Genro\Domain\ValueObject;
 
+use Genro\Domain\Mock\MockString;
+
 /**
  * Class StringTest
  *
@@ -30,7 +32,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->value  = 'This is a string.';
-        $this->string = new String($this->value);
+        $this->string = new MockString($this->value);
     }
 
     public function testNew()
@@ -38,18 +40,24 @@ class StringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $this->string);
     }
 
+    public function testNewFromInt()
+    {
+        $string = new MockString(1);
+        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $string);
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      */
     public function testNewException()
     {
-        new String(null);
+        new MockString(null);
     }
 
     public function testIsSameValueAs()
     {
-        $this->assertTrue($this->string->isSameValueAs(new String($this->value)));
-        $this->assertFalse($this->string->isSameValueAs(new String('This is another string.')));
+        $this->assertTrue($this->string->isSameValueAs(new MockString($this->value)));
+        $this->assertFalse($this->string->isSameValueAs(new MockString('This is another string.')));
     }
 
     public function testGetValue()
