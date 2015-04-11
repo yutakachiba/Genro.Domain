@@ -44,15 +44,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $dateTime = new MockDateTime('1978-05-29 00:00:00');
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $dateTime);
-        $this->assertInstanceOf('\DateTime', $dateTime->getValue());
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testNewWithInvalidString()
-    {
-        new MockDateTime('1234-13-99');
+        $this->assertInstanceOf('\DateTime', $dateTime->toNative());
     }
 
     /**
@@ -63,21 +55,22 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         new MockDateTime(null);
     }
 
-    public function testIsSameValueAs()
+    public function testSameValueAs()
     {
         $dateTime = new MockDateTime($this->value);
-        $actual = $this->dateTime->isSameValueAs($dateTime);
+        $actual = $this->dateTime->sameValueAs($dateTime);
         $this->assertTrue($actual);
 
         $dateTime = new MockDateTime('2015-01-01');
-        $actual = $this->dateTime->isSameValueAs($dateTime);
+        $actual = $this->dateTime->sameValueAs($dateTime);
         $this->assertFalse($actual);
     }
 
-    public function testGetValue()
+    public function testToNative()
     {
-        $value = $this->dateTime->getValue();
-        $this->assertSame($this->value, $value);
+        $value = $this->dateTime->toNative();
+        $this->assertInstanceOf('\DateTime', $value);
+        $this->assertSame($this->value->format('Y-m-d H:i:s'), $value->format('Y-m-d H:i:s'));
     }
 
     public function testIsNull()
@@ -94,13 +87,5 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public function testToString()
     {
         $this->assertSame($this->value->format('Y-m-d H:i:s'), $this->dateTime->__toString());
-    }
-
-    public function testIsNull()
-    {
-        $this->assertFalse($this->dateTime->isNull());
-
-        $dateTime = new MockDateTimeValue(null);
-        $this->assertTrue($dateTime->isNull());
     }
 }

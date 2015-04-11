@@ -9,6 +9,7 @@
 namespace Genro\Domain\Mock;
 
 use Genro\Domain\ValueObject\Nullable;
+use Genro\Domain\ValueObject\PdoValue;
 use Genro\Domain\ValueObject\StringTrait;
 use Genro\Domain\ValueObject\ValueObject;
 
@@ -18,7 +19,7 @@ use Genro\Domain\ValueObject\ValueObject;
  * @package Genro\Domain\Mock
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class MockNullableString implements ValueObject, Nullable
+class MockNullableString implements ValueObject, Nullable, PdoValue
 {
 
     use StringTrait;

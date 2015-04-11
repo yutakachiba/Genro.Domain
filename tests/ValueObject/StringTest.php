@@ -20,7 +20,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Genro\Domain\ValueObject\String
+     * @var \Genro\Domain\ValueObject\ValueObject
      */
     protected $string;
 
@@ -40,12 +40,6 @@ class StringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $this->string);
     }
 
-    public function testNewFromInt()
-    {
-        $string = new MockString(1);
-        $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $string);
-    }
-
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -54,15 +48,15 @@ class StringTest extends \PHPUnit_Framework_TestCase
         new MockString(null);
     }
 
-    public function testIsSameValueAs()
+    public function testSameValueAs()
     {
-        $this->assertTrue($this->string->isSameValueAs(new MockString($this->value)));
-        $this->assertFalse($this->string->isSameValueAs(new MockString('This is another string.')));
+        $this->assertTrue($this->string->sameValueAs(new MockString($this->value)));
+        $this->assertFalse($this->string->sameValueAs(new MockString('This is another string.')));
     }
 
-    public function testGetValue()
+    public function testToNative()
     {
-        $value = $this->string->getValue();
+        $value = $this->string->toNative();
         $this->assertSame($this->value, $value);
     }
 

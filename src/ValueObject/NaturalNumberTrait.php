@@ -8,6 +8,9 @@
  */
 namespace Genro\Domain\ValueObject;
 
+use ValueObjects\Null\Null;
+use ValueObjects\Number\Natural;
+
 /**
  * Trait NaturalNumberTrait
  *
@@ -18,7 +21,7 @@ trait NaturalNumberTrait
 {
 
     /**
-     * @var int
+     * @var Natural|Null
      */
     private $value;
 
@@ -27,27 +30,43 @@ trait NaturalNumberTrait
      */
     public function __construct($value)
     {
-        $value = $this->convertValue($value);
-        $this->validateType($value);
-        $this->validateSpec($value);
-        $this->value = $value;
+        if ($this instanceof Nullable && $value === null) {
+            $this->value = Null::create();
+        } else {
+            $this->value = Natural::fromNative($value);
+        }
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getValue()
+    public function isNull()
     {
-        return $this->value;
+        return $this->value instanceof Null;
     }
 
     /**
      * @param ValueObject $value
      * @return bool
      */
-    public function isSameValueAs(ValueObject $value)
+    public function sameValueAs(ValueObject $value)
     {
-        return ($this->getValue() === $value->getValue());
+        return (
+            get_class($value) === get_class($this) &&
+            $value->toNative() === $this->toNative()
+        );
+    }
+
+    /**
+     * @return int|null
+     */
+    public function toNative()
+    {
+        if ($this->isNull()) {
+            return null;
+        } else {
+            return $this->value->toNative();
+        }
     }
 
     /**
@@ -59,63 +78,10 @@ trait NaturalNumberTrait
     }
 
     /**
-     * @return bool
-     */
-    public function isNull()
-    {
-        return $this->value === null;
-    }
-
-    /**
-     * @return int|null
+     * @return string|null
      */
     public function asPdoValue()
     {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     * @return int
-     */
-    private function convertValue($value)
-    {
-        // Check the value is an int acceptable string.
-        // If so, convert the string to int.
-        if (is_string($value) && preg_match('/\A[0-9]{1,11}\z/', $value)) {
-            return (int)$value;
-        }
-
-        return $value;
-    }
-
-    /**
-     * @param mixed $value
-     * @return bool
-     */
-    private function validateType($value)
-    {
-        // Check if value is nullable and null.
-        if (($this instanceof Nullable) && $value === null) {
-            return true;
-        }
-
-        // Check if value is int.
-        if (is_int($value) && $value >= 0) {
-            return true;
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf('Invalid natural number value specified. $value => "%s"', $value)
-        );
-    }
-
-    /**
-     * @param int $value
-     * @return bool
-     */
-    private function validateSpec($value)
-    {
-        return true;
+        return $this->isNull() ? null : $this->toNative();
     }
 }

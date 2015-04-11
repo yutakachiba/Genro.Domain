@@ -40,15 +40,15 @@ class NullableStringTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $this->string);
     }
 
-    public function testIsSameValueAs()
+    public function testSameValueAs()
     {
-        $this->assertTrue($this->string->isSameValueAs(new MockNullableString($this->value)));
-        $this->assertFalse($this->string->isSameValueAs(new MockNullableString('This is another string.')));
+        $this->assertTrue($this->string->sameValueAs(new MockNullableString($this->value)));
+        $this->assertFalse($this->string->sameValueAs(new MockNullableString('This is another string.')));
     }
 
-    public function testGetValue()
+    public function testToNative()
     {
-        $value = $this->string->getValue();
+        $value = $this->string->toNative();
         $this->assertSame($this->value, $value);
     }
 

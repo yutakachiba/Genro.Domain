@@ -8,6 +8,9 @@
  */
 namespace Genro\Domain\ValueObject;
 
+use ValueObjects\DateTime\DateTime;
+use ValueObjects\Null\Null;
+
 /**
  * Trait DateTimeTrait
  *
@@ -18,7 +21,7 @@ trait DateTimeTrait
 {
 
     /**
-     * @var \DateTime|null
+     * @var DateTime|Null
      */
     private $value;
 
@@ -32,36 +35,27 @@ trait DateTimeTrait
      */
     public function __construct($value)
     {
-        $value = $this->convertValue($value);
-        $this->validateType($value);
-        $this->validateSpec($value);
-        $this->value = $value;
-    }
+        if ($this instanceof Nullable && $value === null) {
+            $this->value = Null::create();
+            return;
+        }
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
+        if ($value instanceof \DateTime) {
+            $this->value = DateTime::fromNativeDateTime($value);
+            return;
+        }
 
-    /**
-     * @param ValueObject $value
-     * @return bool
-     */
-    public function isSameValueAs(ValueObject $value)
-    {
-        // use == for object compare.
-        return ($this->getValue() == $value->getValue());
-    }
+        if (is_string($value)) {
+            try {
+                $this->value = DateTime::fromNativeDateTime(new \DateTime($value));
+                return;
+            } catch (\Exception $e) {
+            }
+        }
 
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->isNull() ? '' : $this->value->format($this->dateFormat);
+        throw new \InvalidArgumentException(
+            sprintf('Invalid DateTime value specified.')
+        );
     }
 
     /**
@@ -69,7 +63,44 @@ trait DateTimeTrait
      */
     public function isNull()
     {
-        return $this->value === null;
+        return $this->value instanceof Null;
+    }
+
+    /**
+     * @param ValueObject $value
+     * @return bool
+     */
+    public function sameValueAs(ValueObject $value)
+    {
+        return (
+            get_class($value) === get_class($this) &&
+            $value->toNative() == $this->toNative()
+        );
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function toNative()
+    {
+        if ($this->isNull()) {
+            return null;
+        }
+
+        return $this->value->toNativeDateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        if ($this->isNull()) {
+            return $this->value->__toString();
+        }
+
+        $dateTime = $this->value->toNativeDateTime();
+        return $dateTime->format($this->dateFormat);
     }
 
     /**
@@ -77,54 +108,6 @@ trait DateTimeTrait
      */
     public function asPdoValue()
     {
-        return $this->isNull() ? $this->value : $this->__toString();
-    }
-
-    /**
-     * @param mixed $value
-     * @return \DateTime
-     */
-    private function convertValue($value)
-    {
-        // Check if value is a \DateTime acceptable string.
-        // If so, convert string to \DateTime and return it as value.
-        if (is_string($value)) {
-            try {
-                return new \DateTime($value);
-            } catch (\Exception $e) {
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * @param mixed $value
-     * @return bool
-     */
-    private function validateType($value)
-    {
-        // Check if value is nullable and null.
-        if (($this instanceof Nullable) && $value === null) {
-            return true;
-        }
-
-        // Check if value is a \DateTime object.
-        if ($value instanceof \DateTime) {
-            return true;
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf('Invalid DateTime value specified. $value => "%s"', $value)
-        );
-    }
-
-    /**
-     * @param \DateTime $value
-     * @return bool
-     */
-    private function validateSpec($value)
-    {
-        return true;
+        return $this->isNull() ? null : $this->__toString();
     }
 }
