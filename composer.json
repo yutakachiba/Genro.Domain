@@ -9,6 +9,6 @@
         }
     },
     "require": {
-        "danielstjules/stringy": "~1.9"
+        "nicolopignatelli/valueobjects": "~2.0"
     }
 }
