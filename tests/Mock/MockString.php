@@ -8,6 +8,7 @@
  */
 namespace Genro\Domain\Mock;
 
+use Genro\Domain\ValueObject\PdoValue;
 use Genro\Domain\ValueObject\StringTrait;
 use Genro\Domain\ValueObject\ValueObject;
 
@@ -17,7 +18,7 @@ use Genro\Domain\ValueObject\ValueObject;
  * @package Genro\Domain\Mock
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class MockString implements ValueObject
+class MockString implements ValueObject, PdoValue
 {
 
     use StringTrait;

@@ -76,15 +76,15 @@ class NaturalNumberTest extends \PHPUnit_Framework_TestCase
         new MockNaturalNumber(null);
     }
 
-    public function testIsSameValueAs()
+    public function testSameValueAs()
     {
-        $this->assertTrue($this->number->isSameValueAs(new MockNaturalNumber(1)));
-        $this->assertFalse($this->number->isSameValueAs(new MockNaturalNumber(2)));
+        $this->assertTrue($this->number->sameValueAs(new MockNaturalNumber(1)));
+        $this->assertFalse($this->number->sameValueAs(new MockNaturalNumber(2)));
     }
 
-    public function testGetValue()
+    public function testToNative()
     {
-        $value = $this->number->getValue();
+        $value = $this->number->toNative();
         $this->assertSame($this->value, $value);
     }
 

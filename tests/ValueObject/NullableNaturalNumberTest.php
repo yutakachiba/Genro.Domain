@@ -46,15 +46,15 @@ class NullableNaturalNumberTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $number);
     }
 
-    public function testIsSameValueAs()
+    public function testSameValueAs()
     {
-        $this->assertTrue($this->number->isSameValueAs(new MockNullableNaturalNumber($this->value)));
-        $this->assertFalse($this->number->isSameValueAs(new MockNullableNaturalNumber(2)));
+        $this->assertTrue($this->number->sameValueAs(new MockNullableNaturalNumber($this->value)));
+        $this->assertFalse($this->number->sameValueAs(new MockNullableNaturalNumber(2)));
     }
 
-    public function testGetValue()
+    public function testToNative()
     {
-        $value = $this->number->getValue();
+        $value = $this->number->toNative();
         $this->assertSame($this->value, $value);
     }
 

@@ -10,6 +10,7 @@ namespace Genro\Domain\Mock;
 
 use Genro\Domain\ValueObject\DateTimeTrait;
 use Genro\Domain\ValueObject\Nullable;
+use Genro\Domain\ValueObject\PdoValue;
 use Genro\Domain\ValueObject\ValueObject;
 
 /**
@@ -18,7 +19,7 @@ use Genro\Domain\ValueObject\ValueObject;
  * @package Genro\Domain\Mock
  * @author Yutaka Chiba <yutakachiba@gmail.com>
  */
-class MockNullableDateTime implements ValueObject, Nullable
+class MockNullableDateTime implements ValueObject, Nullable, PdoValue
 {
 
     use DateTimeTrait;

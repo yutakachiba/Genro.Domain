@@ -44,23 +44,23 @@ class NullableDateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $dateTime = new MockNullableDateTime(new \DateTime('1978-05-29'));
         $this->assertInstanceOf('Genro\Domain\ValueObject\ValueObject', $dateTime);
-        $this->assertInstanceOf('\DateTime', $dateTime->getValue());
+        $this->assertInstanceOf('\DateTime', $dateTime->toNative());
     }
 
-    public function testIsSameValueAs()
+    public function testSameValueAs()
     {
         $dateTime = new MockNullableDateTime($this->value);
-        $actual = $this->dateTime->isSameValueAs($dateTime);
+        $actual = $this->dateTime->sameValueAs($dateTime);
         $this->assertTrue($actual);
 
         $dateTime = new MockNullableDateTime('2015-01-01');
-        $actual = $this->dateTime->isSameValueAs($dateTime);
+        $actual = $this->dateTime->sameValueAs($dateTime);
         $this->assertFalse($actual);
     }
 
-    public function testGetValue()
+    public function testToNative()
     {
-        $value = $this->dateTime->getValue();
+        $value = $this->dateTime->toNative();
         $this->assertSame($this->value, $value);
     }
 

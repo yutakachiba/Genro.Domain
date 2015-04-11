@@ -20,13 +20,13 @@ interface ValueObject
     /**
      * @return ValueObject
      */
-    public function getValue();
+    public function toNative();
 
     /**
      * @param ValueObject $value
      * @return bool
      */
-    public function isSameValueAs(ValueObject $value);
+    public function sameValueAs(ValueObject $value);
 
     /**
      * @return string
