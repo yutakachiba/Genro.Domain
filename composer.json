@@ -9,6 +9,7 @@
         }
     },
     "require": {
-        "nicolopignatelli/valueobjects": "~2.0"
+        "nicolopignatelli/valueobjects": "~2.0",
+        "doctrine/inflector": "~1.0"
     }
 }
